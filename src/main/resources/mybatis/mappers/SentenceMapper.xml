@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.botdemo.demo1.mapper.SentenceMapper">
+
+
+    <select id="getTotalNumber" resultType="Integer">
+        select count(*) from baoshi
+    </select>
+
+    <select id="getSentence" resultType="String">
+        select sentence from baoshi where id=#{id}
+    </select>
+
+    <select id="getTotalResponseNumber" resultType="Integer">
+        select count(*) from response
+    </select>
+
+    <select id="getResponseSentence" resultType="String">
+        select sentence from response where id=#{id}
+    </select>
+
+    <update id="storeFileCode">
+        insert into small_files (file_code, comment) values (#{fileCode}, #{name})
+    </update>
+</mapper>

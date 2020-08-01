@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.botdemo.demo1.mapper.PcrMapper"><!--namespace指向mapper文件所在地-->
+
+
+    <update id="autoWriteIn">
+        insert into ${form_name}
+        <foreach collection="column_name" index="columnNumber" item="columnName" open="(" close=")" separator=",">
+            ${columnName}
+        </foreach>
+        values
+        <foreach collection="array" index="index" item="info" separator=",">
+            (<foreach collection="info" item="key" separator=",">
+            #{key}
+        </foreach>)
+        </foreach>
+    </update>
+
+    <update id="addOneMember">
+        insert into group_chart (user_id, card) values (#{user_id}, #{card})
+    </update>
+
+    <update id="updateMemberName">
+update group_chart set card=#{card} where user_id=#{user_id}
+    </update>
+
+    <select id="getMemberData" resultType="HashMap">
+select * from group_chart where user_id=#{user_id}
+    </select>
+
+    <select id="getAllMemberData" resultType="HashMap">
+        select * from group_chart
+    </select>
+
+    <update id="setMemberData">
+        update group_chart set battle_remain=#{new_data} where user_id=#{user_id}
+    </update>
+
+    <update id="resetAllBattleNumber">
+        update group_chart set battle_remain=3
+    </update>
+
+    <update id="addBoss">
+        insert into boss_chart (boss_number, boss_max_health, boss_current_health, boss_die) values (#{boss_number}, #{boss_health}, #{boss_health},0)
+    </update>
+
+    <select id="getBossNumber" resultType="Integer">
+        select count(*) from boss_chart
+    </select>
+
+    <update id="killBoss">
+        update boss_chart set boss_current_health=0, boss_die=1 where boss_number=#{boss_number}
+    </update>
+
+    <update id="setBossHealthGeneral">
+        update boss_chart set boss_current_health=#{boss_health}, boss_max_health=#{boss_max_health} where boss_number=#{boss_number}
+    </update>
+
+    <select id="getNextBoss" resultType="HashMap">
+        select * from boss_chart where boss_number=#{boss_number}
+    </select>
+
+    <select id="getCurrentInfo" resultType="HashMap">
+        select * from processing_chart
+    </select>
+
+    <update id="setCurrentMember">
+        update processing_chart set user_id=#{user_id}, card=#{card}, combine_code=#{combine_code}
+    </update>
+
+    <update id="setCombineMember">
+        update processing_chart set user_id_2=#{user_id_2}, card_2=#{card_2}, combine_code=#{combine_code}
+    </update>
+
+    <update id="setBossHealth">
+        update processing_chart set user_id="no_one", card="no_one",user_id_2="no_one", card_2="no_one", boss_health=#{boss_health}, combine_code=0
+    </update>
+
+    <update id="loadNewBoss">
+        update processing_chart set user_id="no_one", card="no_one",user_id_2="no_one", card_2="no_one", boss_health=#{boss_health},
+         boss_max_health=#{boss_max_health}, combine_code=0, boss_number=#{boss_number}
+    </update>
+
+    <update id="clearCurrentMember">
+        update processing_chart set user_id="no_one", card="no_one",user_id_2="no_one", card_2="no_one",combine_code=0
+    </update>
+
+    <select id="getAllCharacter" resultType="String">
+        select name from characters
+    </select>
+
+    <select id="getUpCharacter" resultType="String">
+        select name from characters where status=1
+    </select>
+
+    <select id="getNormalCharacter" resultType="String">
+        select name from characters where status=0
+    </select>
+</mapper>
+
+
